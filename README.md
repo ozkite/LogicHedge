@@ -128,11 +128,14 @@ You can only blow up once. Our Rust-based Risk Engine is the supreme authority i
     Academic-Grade Analysis: All strategies undergo rigorous Walk-Forward Analysis to prevent overfitting, ensuring our "Edge" is based on market logic, not historical anomalies
 
 <div align="center">
+```
+
+   
 LOGIC HEDGE
 The Inevitable Approach to Futuristic Wealth.
 
 This repository contains proprietary trading systems, algorithms, and research infrastructure powering our investment strategies.
-</div> ```
+</div> 
 
 
 
@@ -170,8 +173,7 @@ graph TD
     end
 
     L1 -.->|MEV / Pending Tx| MD
-
-
+```
 
 
 
@@ -279,6 +281,7 @@ sequenceDiagram
     deactivate E
     Note over M, E: T+ < Milliseconds
 ```
+
 
 
 
