@@ -89,6 +89,8 @@ graph TD
     end
 
     L1 -.->|MEV / Pending Tx| MD
+```
+
 
 4. STRATEGIC PILLARS
 I. Agentic Capital Allocation
@@ -277,4 +279,5 @@ sequenceDiagram
     deactivate E
     Note over M, E: T+ < Milliseconds
 ```
+
 
