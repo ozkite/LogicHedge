@@ -11,7 +11,10 @@
 <div align="center">
 
 
-                                                                                           
+      __   __     __           ___  __   __   ___ 
+|    /  \ / _` | /  `    |__| |__  |  \ / _` |__  
+|___ \__/ \__> | \__,    |  | |___ |__/ \__> |___ 
+                                                                                                                                             
                                                                                                            
 
 
@@ -295,6 +298,7 @@ sequenceDiagram
     deactivate E
     Note over M, E: T+ < Milliseconds
 ```
+
 
 
 
