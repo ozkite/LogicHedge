@@ -1,0 +1,126 @@
+# AI Agents Strategy Configuration
+# Version: 1.0.0
+
+ai_agents:
+  # General settings
+  enabled: true
+  strategy_name: "autonomous_ai_swarm"
+  description: "Swarm of AI agents trading autonomously using reinforcement learning"
+  
+  # Agent deployment
+  deployment:
+    num_parallel_agents: 5
+    agent_types:
+      - "reinforcement_learning"
+      - "deep_learning_predictor"
+      - "sentiment_analyzer"
+      - "arbitrage_detector"
+      - "market_maker"
+      
+    spawn_schedule: "continuous"  # continuous, scheduled, event_triggered
+    max_total_agents: 20
+    agent_lifetime_hours: 24
+    
+  # RL Agent Configuration
+  reinforcement_learning:
+    enabled: true
+    model_type: "ppo"  # ppo, dqn, a2c, sac
+    state_space:
+      features:
+        - "price_normalized"
+        - "volume_normalized"
+        - "rsi"
+        - "macd"
+        - "bollinger_band_position"
+        - "order_book_imbalance"
+        - "funding_rate"
+        - "volatility_24h"
+        
+    action_space:
+      type: "continuous"  # discrete, continuous, multi_discrete
+      num_actions: 3  # For discrete: -1 (sell), 0 (hold), 1 (buy)
+      action_bounds: [-1.0, 1.0]  # For continuous
+      
+    training:
+      gamma: 0.99
+      learning_rate: 0.0003
+      batch_size: 64
+      buffer_size: 10000
+      train_every_steps: 100
+      target_update_freq: 1000
+      
+  # Deep Learning Predictor
+  deep_learning:
+    enabled: true
+    model_architecture: "transformer"  # lstm, gru, transformer, attention
+    sequence_length: 60
+    prediction_horizon: 5  # Predict 5 steps ahead
+    features: 20
+    hidden_dim: 128
+    num_layers: 4
+    num_heads: 8
+    
+  # Swarm Intelligence
+  swarm:
+    enabled: true
+    topology: "fully_connected"
+    consensus_mechanism: "weighted_voting"
+    communication_interval: 60  # seconds
+    knowledge_sharing: true
+    diversity_penalty: 0.1
+    
+  # Trading Parameters
+  trading:
+    symbols:
+      - "BTC-USDT"
+      - "ETH-USDT"
+      - "SOL-USDT"
+      - "ADA-USDT"
+      - "DOT-USDT"
+      
+    position_sizing: "kelly_optimal"  # fixed, kelly_optimal, risk_parity
+    max_position_size_usd: 5000.0
+    min_confidence_threshold: 0.7
+    
+    entry_conditions:
+      min_rsi: 30
+      max_rsi: 70
+      min_volume_multiplier: 1.5
+      max_spread_pct: 0.001
+      
+    exit_conditions:
+      take_profit_pct: 0.03
+      stop_loss_pct: 0.02
+      trailing_stop_pct: 0.015
+      max_holding_period_hours: 24
+      
+  # Risk Management
+  risk:
+    max_daily_trades_per_agent: 10
+    max_concurrent_positions: 3
+    correlation_threshold: 0.8
+    volatility_filter: true
+    max_drawdown_pct: 0.1
+    
+  # Performance Monitoring
+  monitoring:
+    log_all_predictions: true
+    save_model_checkpoints: true
+    checkpoint_interval_hours: 6
+    performance_report_interval: 3600  # seconds
+    
+    metrics_to_track:
+      - "sharpe_ratio"
+      - "max_drawdown"
+      - "win_rate"
+      - "profit_factor"
+      - "calmar_ratio"
+      - "sortino_ratio"
+      
+  # Integration Settings
+  integration:
+    data_source: "combined"  # real_time, historical, combined
+    update_frequency: 1  # seconds
+    use_news_sentiment: true
+    use_social_media: true
+    use_onchain_data: true
