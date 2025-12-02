@@ -1,0 +1,152 @@
+# Market Making Strategy Configuration
+# Version: 1.0.0
+
+market_making:
+  # General settings
+  enabled: true
+  strategy_name: "adaptive_market_maker"
+  description: "Adaptive market making with inventory management and predictive placement"
+  
+  # Venue configuration
+  venues:
+    - name: "hyperliquid"
+      type: "dex"
+      symbols:
+        - "BTC-USDT-PERP"
+        - "ETH-USDT-PERP"
+        - "SOL-USDT-PERP"
+        
+    - name: "binance"
+      type: "cex"
+      symbols:
+        - "BTCUSDT"
+        - "ETHUSDT"
+        - "SOLUSDT"
+        
+  # Spread management
+  spread:
+    base_spread_pct: 0.001  # 0.1%
+    min_spread_pct: 0.0005  # 0.05%
+    max_spread_pct: 0.005   # 0.5%
+    
+    adjustment_model: "volatility_inventory"  # fixed, volatility, inventory, combined
+    
+    volatility_adjustment:
+      enabled: true
+      lookback_period: 100
+      multiplier: 1.5
+      volatility_thresholds:
+        low: 0.005  # 0.5%
+        medium: 0.02  # 2%
+        high: 0.05   # 5%
+        
+    inventory_adjustment:
+      enabled: true
+      skew_multiplier: 0.0005  # 0.05% per skew unit
+      max_skew_adjustment: 0.002  # 0.2%
+      
+  # Order sizing
+  order_sizing:
+    base_size_usd: 100.0
+    min_size_usd: 10.0
+    max_size_usd: 1000.0
+    
+    dynamic_sizing:
+      enabled: true
+      factors:
+        - "volatility"
+        - "inventory"
+        - "spread"
+        - "time_of_day"
+        
+    volatility_scaling:
+      high_vol_multiplier: 0.5
+      low_vol_multiplier: 1.5
+      
+  # Inventory management
+  inventory:
+    target_inventory_usd: 0.0
+    max_inventory_usd: 10000.0
+    rebalance_threshold_pct: 0.3  # Rebalance at 30% of max
+    
+    rebalancing:
+      method: "aggressive"  # aggressive, passive, scheduled
+      interval_seconds: 3600
+      max_rebalance_size_pct: 0.1  # 10% of position
+      
+    hedging:
+      enabled: true
+      hedge_ratio: 1.0
+      hedge_instrument: "perp_futures"
+      hedge_execution: "immediate"  # immediate, scheduled, threshold
+      
+  # Risk management
+  risk:
+    position_limits:
+      max_position_usd: 5000.0
+      max_concurrent_symbols: 5
+      max_quote_ratio: 0.1  # Max 10% of order book on one side
+      
+    stop_conditions:
+      max_drawdown_pct: 0.05
+      max_daily_loss_usd: 1000.0
+      max_consecutive_losses: 5
+      
+    circuit_breakers:
+      volatility_breaker:
+        enabled: true
+        threshold_pct: 0.05  # 5% price move in 5 minutes
+        action: "widen_spread"
+        
+      volume_breaker:
+        enabled: true
+        threshold_multiplier: 10.0  # 10x average volume
+        action: "reduce_size"
+        
+      adverse_selection:
+        enabled: true
+        max_fill_ratio: 0.8  # Max 80% of quotes filled against
+        action: "pause_trading"
+        
+  # Execution parameters
+  execution:
+    order_update_frequency: 1  # seconds
+    order_lifetime: 30  # seconds
+    
+    price_improvement:
+      enabled: true
+      improvement_pct: 0.0001  # 0.01%
+      
+    anti_gaming:
+      quote_fade: true
+      randomize_timing: true
+      size_randomization_pct: 0.1  # 10% size randomization
+      
+  # Performance monitoring
+  monitoring:
+    metrics:
+      - "capture_rate"
+      - "realized_spread"
+      - "inventory_turnover"
+      - "adverse_selection"
+      - "profit_and_loss"
+      
+    reporting:
+      interval_seconds: 300
+      detailed_logging: true
+      alert_on_anomalies: true
+      
+  # Advanced features
+  advanced:
+    predictive_placement:
+      enabled: false
+      model_type: "lstm"
+      prediction_horizon: 10  # candles
+      
+    machine_learning:
+      enabled: true
+      features:
+        - "order_book_imbalance"
+        - "trade_flow"
+        - "volatility_regime"
+        - "macro_signals"
