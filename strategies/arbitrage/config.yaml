@@ -1,0 +1,150 @@
+# Arbitrage Strategy Configuration
+# Version: 1.0.0
+
+arbitrage:
+  # General settings
+  enabled: true
+  strategy_name: "multi_venue_arbitrage"
+  description: "Cross-venue arbitrage across CEX and DEX markets"
+  
+  # Strategy types to enable
+  enabled_strategies:
+    - "cross_exchange"
+    - "dex_cex"
+    - "funding_rate"
+    - "futures_basis"
+    
+  # Cross-exchange arbitrage
+  cross_exchange:
+    enabled: true
+    exchanges:
+      - name: "binance"
+        type: "cex"
+      - name: "bybit"
+        type: "cex"
+      - name: "okx"
+        type: "cex"
+      - name: "hyperliquid"
+        type: "dex"
+      - name: "uniswap_v3"
+        type: "dex"
+        
+    symbol_pairs:
+      - base: "BTC"
+        quote: "USDT"
+      - base: "ETH"
+        quote: "USDT"
+      - base: "SOL"
+        quote: "USDT"
+        
+    thresholds:
+      min_price_diff_pct: 0.0015  # 0.15%
+      min_profit_usd: 10.0
+      max_slippage_pct: 0.002
+      max_transfer_time_seconds: 60
+      
+    execution:
+      order_type: "market"  # market, limit
+      hedge_on_target: true
+      use_smart_routing: true
+      
+  # DEX-CEX arbitrage
+  dex_cex:
+    enabled: true
+    dex_venues:
+      - "hyperliquid"
+      - "uniswap_v3"
+      - "curve"
+      - "balancer"
+      
+    cex_venues:
+      - "binance"
+      - "bybit"
+      - "kraken"
+      
+    tokens:
+      - "USDC"
+      - "USDT"
+      - "DAI"
+      - "WETH"
+      - "WBTC"
+      
+    thresholds:
+      min_arb_profit_pct: 0.003  # 0.3% (higher due to gas costs)
+      min_profit_after_gas: 50.0  # USD
+      max_gas_price_gwei: 50
+      
+    execution:
+      use_mev_protection: true
+      bundle_transactions: true
+      priority_fee_multiplier: 1.2
+      
+  # Funding rate arbitrage
+  funding_rate:
+    enabled: true
+    symbols:
+      - "BTC-USDT-PERP"
+      - "ETH-USDT-PERP"
+      - "SOL-USDT-PERP"
+      
+    thresholds:
+      min_funding_rate_pct: 0.01  # 1% per 8 hours
+      min_annualized_yield: 0.15  # 15%
+      
+    strategy:
+      hedge_ratio: 1.0
+      max_leverage: 3.0
+      rebalance_threshold_pct: 0.25
+      use_cross_collateral: true
+      
+  # Futures basis arbitrage
+  futures_basis:
+    enabled: true
+    spot_exchanges:
+      - "binance"
+      - "coinbase"
+      
+    futures_exchanges:
+      - "bybit"
+      - "okx"
+      - "hyperliquid"
+      
+    symbols:
+      - "BTC"
+      - "ETH"
+      - "SOL"
+      
+    thresholds:
+      min_basis_pct: 0.005  # 0.5%
+      max_basis_pct: 0.03   # 3% (to avoid extreme situations)
+      min_roll_return: 0.0002
+      
+  # Risk management
+  risk:
+    max_position_size_usd: 10000.0
+    max_daily_volume_usd: 100000.0
+    max_concurrent_trades: 5
+    stop_loss_pct: 0.01
+    
+    circuit_breakers:
+      volatility_breaker_pct: 0.05
+      volume_breaker_multiplier: 10
+      network_congestion_gwei: 100
+      
+  # Performance monitoring
+  monitoring:
+    log_all_opportunities: true
+    opportunity_alert_threshold_pct: 0.02
+    
+    metrics:
+      capture_rate: true
+      slippage_analysis: true
+      fill_rate: true
+      latency_metrics: true
+      
+  # Optimization
+  optimization:
+    use_machine_learning: true
+    predict_slippage: true
+    optimize_gas_usage: true
+    dynamic_threshold_adjustment: true
