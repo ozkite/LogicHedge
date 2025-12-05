@@ -1,0 +1,40 @@
+# CedeHub Configuration
+cedehub:
+  api_key: ${CEDEHUB_API_KEY}
+  api_secret: ${CEDEHUB_API_SECRET}
+  environment: "production"  # or "sandbox"
+  
+  # Connected exchanges via CedeHub
+  exchanges:
+    - name: "binance"
+      type: "spot"  # spot, futures, margin
+      subaccount: "trading_01"
+      
+    - name: "bybit"
+      type: "linear"  # USDT perpetuals
+      subaccount: "derivatives"
+      
+    - name: "mexc"
+      type: "spot"
+      subaccount: "arbitrage"
+      
+  # Trading parameters
+  trading:
+    max_unified_position_usd: 50000
+    max_leverage: 3.0
+    daily_loss_limit: 1000
+    min_arbitrage_profit_pct: 0.001
+    
+  # Smart order routing
+  smart_routing:
+    enabled: true
+    prefer_lowest_fees: true
+    prefer_highest_liquidity: true
+    max_slippage: 0.001
+    
+  # Collateral management
+  collateral:
+    primary_asset: "USDC"
+    secondary_assets: ["BTC", "ETH"]
+    target_utilization: 0.6
+    rebalance_threshold: 0.1
