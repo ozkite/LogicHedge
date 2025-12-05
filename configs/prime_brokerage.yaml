@@ -1,0 +1,78 @@
+prime_brokerage_services:
+  cedehub:
+    enabled: true
+    api_key: ${CEDEHUB_API_KEY}
+    api_secret: ${CEDEHUB_API_SECRET}
+    capital_allocation: 200000  # $200k
+    
+  copper:
+    enabled: true
+    api_key: ${COPPER_API_KEY}
+    api_secret: ${COPPER_API_SECRET}
+    client_id: ${COPPER_CLIENT_ID}
+    capital_allocation: 300000
+    
+  falconx:
+    enabled: true
+    api_key: ${FALCONX_API_KEY}
+    api_secret: ${FALCONX_API_SECRET}
+    capital_allocation: 150000
+    
+  dydx:
+    enabled: true
+    private_key: ${DYDX_PRIVATE_KEY}
+    stark_key: ${DYDX_STARK_KEY}
+    capital_allocation: 100000
+    
+  aevo:
+    enabled: true
+    api_key: ${AEVO_API_KEY}
+    signing_key: ${AEVO_SIGNING_KEY}
+    capital_allocation: 50000
+    
+  gamma:
+    enabled: true
+    private_key: ${GAMMA_PRIVATE_KEY}
+    capital_allocation: 50000
+    
+  ribbon:
+    enabled: true
+    wallet: ${RIBBON_WALLET}
+    capital_allocation: 100000
+    
+  hashnote:
+    enabled: true
+    wallet: ${HASHNOTE_WALLET}
+    capital_allocation: 200000
+    
+  paradex:
+    enabled: true
+    stark_key: ${PARADEX_STARK_KEY}
+    eth_key: ${PARADEX_ETH_KEY}
+    capital_allocation: 50000
+
+# Risk management
+risk_limits:
+  total_capital: 1000000
+  max_daily_loss: 10000
+  max_delta_exposure: 50000
+  max_var_95: 20000
+  max_leverage: 3.0
+  
+# Strategy allocation
+strategies:
+  arbitrage:
+    weight: 0.4
+    services: ['cedehub', 'falconx', 'paradex']
+    
+  market_making:
+    weight: 0.2
+    services: ['gamma', 'dydx']
+    
+  yield:
+    weight: 0.3
+    services: ['ribbon', 'hashnote', 'aevo']
+    
+  hedging:
+    weight: 0.1
+    services: ['copper', 'dydx']
