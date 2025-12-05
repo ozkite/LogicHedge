@@ -1,0 +1,29 @@
+exchanges:
+  binance:
+    api_key: ${BINANCE_API_KEY}
+    api_secret: ${BINANCE_API_SECRET}
+    testnet: false
+    type: "spot"  # or "future" for derivatives
+    
+  bybit:
+    api_key: ${BYBIT_API_KEY}
+    api_secret: ${BYBIT_API_SECRET}
+    testnet: true  # Start with testnet!
+    type: "linear"  # USDT perpetuals
+    
+  mexc:
+    api_key: ${MEXC_API_KEY}
+    api_secret: ${MEXC_API_SECRET}
+    testnet: false
+    
+  pionex:
+    api_key: ${PIONEX_API_KEY}
+    api_secret: ${PIONEX_API_SECRET}
+    # Pionex has built-in grid trading bots
+    
+# Rate limits (requests per second)
+rate_limits:
+  binance: 10
+  bybit: 20
+  mexc: 10
+  pionex: 5
