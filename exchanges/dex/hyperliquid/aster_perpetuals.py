@@ -610,3 +610,25 @@ class AsterPerpetualTrader:
         # Implement actual API call
         self.account_balance = 50000.0
         self.available_margin = 50000.0
+funding rates and risk-free rate"""
+        # Simplified calculation
+        funding_rate = self.funding_rates.get(symbol, 0.0)
+        risk_free_rate = 0.05  # 5% annual
+        
+        # Fair basis = (risk_free_rate - funding_rate) * time_factor
+        daily_rate = (risk_free_rate - funding_rate * 3) / 365  # 3 funding periods per day
+        return daily_rate * 100  # Convert to percentage
+        
+    async def execute_delta_neutral_market_making(self, symbol: str):
+        """
+        Delta-neutral market making on perpetuals.
+        Provide liquidity while hedging delta risk.
+        """
+        contract = self.contracts.get(symbol)
+        if not contract:
+            return
+            
+        # Get order book
+        order_book = await self._get_order_book(symbol)
+        if not order_book:
+            return
