@@ -1,0 +1,101 @@
+# CCXT Exchange Configurations
+exchanges:
+  binance:
+    enabled: true
+    api_key: ${BINANCE_API_KEY}
+    api_secret: ${BINANCE_API_SECRET}
+    sandbox: true  # Start with testnet!
+    rate_limit: 10  # requests per second
+    type: "spot"  # spot, margin, future
+    
+  bybit:
+    enabled: true
+    api_key: ${BYBIT_API_KEY}
+    api_secret: ${BYBIT_API_SECRET}
+    sandbox: true
+    rate_limit: 20
+    type: "linear"  # USDT perpetuals
+    
+  okx:
+    enabled: true
+    api_key: ${OKX_API_KEY}
+    api_secret: ${OKX_API_SECRET}
+    password: ${OKX_PASSWORD}  # Some exchanges need passphrase
+    sandbox: true
+    rate_limit: 20
+    
+  mexc:
+    enabled: true
+    api_key: ${MEXC_API_KEY}
+    api_secret: ${MEXC_API_SECRET}
+    sandbox: true
+    rate_limit: 10
+    
+  kucoin:
+    enabled: true
+    api_key: ${KUCOIN_API_KEY}
+    api_secret: ${KUCOIN_API_SECRET}
+    password: ${KUCOIN_PASSWORD}
+    sandbox: true
+    rate_limit: 15
+    
+  gateio:
+    enabled: true
+    api_key: ${GATEIO_API_KEY}
+    api_secret: ${GATEIO_API_SECRET}
+    sandbox: true
+    rate_limit: 10
+    
+  huobi:
+    enabled: false
+    api_key: ${HUOBI_API_KEY}
+    api_secret: ${HUOBI_API_SECRET}
+    sandbox: true
+    rate_limit: 10
+    
+  kraken:
+    enabled: false
+    api_key: ${KRAKEN_API_KEY}
+    api_secret: ${KRAKEN_API_SECRET}
+    sandbox: true
+    rate_limit: 15
+
+# Trading Parameters
+trading:
+  default_symbols:
+    - "BTC/USDT"
+    - "ETH/USDT"
+    - "BNB/USDT"
+    - "SOL/USDT"
+    - "XRP/USDT"
+    
+  min_order_size: 10.0  # USD
+  max_order_size: 10000.0  # USD
+  
+  # Risk Management
+  max_position_per_symbol: 0.1  # 10% of portfolio
+  max_daily_loss: 0.02  # 2%
+  stop_loss_pct: 0.05  # 5%
+  take_profit_pct: 0.10  # 10%
+  
+# Strategy Configuration
+strategies:
+  mean_reversion:
+    enabled: true
+    symbols: ["BTC/USDT", "ETH/USDT"]
+    window: 20
+    std_dev: 2.0
+    
+  momentum:
+    enabled: true
+    symbols: ["BTC/USDT", "ETH/USDT"]
+    fast_period: 12
+    slow_period: 26
+    
+  grid_trading:
+    enabled: false
+    symbols: ["BTC/USDT"]
+    lower_price: 40000
+    upper_price: 50000
+    grid_number: 20
+    investment: 1000
