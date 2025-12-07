@@ -1,0 +1,53 @@
+# SUI_USDT Futures Trading Configuration
+
+suiusdt:
+  # Exchange Settings
+  exchange: "binance"  # or "bybit", "okx", "kucoin"
+  testnet: true  # Use testnet for testing
+  
+  # Trading Parameters
+  leverage: 10
+  risk_per_trade: 0.02  # 2% risk per trade
+  max_daily_loss: 0.05  # 5% max daily loss
+  max_position_size: 0.1  # 10% of account per position
+  
+  # Strategy Parameters
+  timeframes:
+    primary: "15m"
+    secondary: "1h"
+    higher: "4h"
+  
+  # Indicators
+  indicators:
+    rsi_period: 14
+    ema_fast: 9
+    ema_medium: 21
+    ema_slow: 50
+    atr_period: 14
+    volume_sma_period: 20
+    
+  # Entry Conditions
+  entry:
+    rsi_overbought: 75
+    rsi_oversold: 25
+    volume_spike_threshold: 2.5
+    trend_alignment_threshold: 0.7
+    
+  # Exit Conditions
+  exit:
+    take_profit_levels: [1.5, 2.5, 4.0]  # Risk multiples
+    trailing_stop_atr_multiple: 2.0
+    break_even_atr_multiple: 1.0
+    
+  # Risk Management
+  risk:
+    max_consecutive_losses: 3
+    cooldown_after_loss: 3600  # seconds
+    minimum_volume: 1000000  # USD daily volume
+    
+  # Trading Sessions (UTC hours)
+  optimal_sessions:
+    asian: [0, 8]
+    london: [8, 16]
+    us: [14, 22]
+    overlap: [14, 16]  # London/US overlap - most volatile
