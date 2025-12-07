@@ -1,0 +1,93 @@
+"""
+Statistical Arbitrage - Pairs Trading Strategy
+Mid Risk - Mean reversion strategy for correlated assets
+Source: Inspired by awesome-quant and awesome-systematic-trading
+"""
+
+import pandas as pd
+import numpy as np
+from typing import Dict, List, Tuple
+from dataclasses import dataclass
+from scipy import stats
+import statsmodels.api as sm
+
+@dataclass
+class PairsTradeSignal:
+    asset_a: str
+    asset_b: str
+    spread: float
+    z_score: float
+    signal: str  # 'BUY_SPREAD' or 'SELL_SPREAD'
+    entry_threshold: float
+    exit_threshold: float
+    hedge_ratio: float
+
+class StatisticalArbitrage:
+    def __init__(self,
+                 lookback_period=60,
+                 entry_z=2.0,
+                 exit_z=0.5,
+                 half_life=None):
+        """
+        Pairs Trading Strategy using cointegration
+        
+        Args:
+            lookback_period: Days for correlation calculation
+            entry_z: Z-score threshold for entry
+            exit_z: Z-score threshold for exit
+            half_life: Half-life for mean reversion (auto-calculated if None)
+        """
+        self.lookback = lookback_period
+        self.entry_z = entry_z
+        self.exit_z = exit_z
+        self.half_life = half_life
+        
+    def find_cointegrated_pairs(self, 
+                               price_data: pd.DataFrame,
+                               pvalue_threshold=0.05) -> List[Tuple[str, str, float]]:
+        """
+        Find cointegrated pairs using Engle-Granger test
+        
+        Returns:
+            List of (asset1, asset2, p-value) tuples
+        """
+        n_assets = len(price_data.columns)
+        cointegrated_pairs = []
+        
+        for i in range(n_assets):
+            for j in range(i+1, n_assets):
+                asset1 = price_data.columns[i]
+                asset2 = price_data.columns[j]
+                
+                # Run Engle-Granger test
+                result = self._engle_granger_test(
+                    price_data[asset1], 
+                    price_data[asset2]
+                )
+                
+                if result['pvalue'] < pvalue_threshold:
+                    cointegrated_pairs.append(
+                        (asset1, asset2, result['pvalue'], result['hedge_ratio'])
+                    )
+        
+        return sorted(cointegrated_pairs, key=lambda x: x[2])  # Sort by p-value
+    
+    def _engle_granger_test(self, series1: pd.Series, series2: pd.Series) -> Dict:
+        """Perform Engle-Granger cointegration test"""
+        # Step 1: Run OLS regression
+        X = sm.add_constant(series1)
+        model = sm.OLS(series2, X).fit()
+        hedge_ratio = model.params[1]
+        
+        # Step 2: Calculate residuals (spread)
+        spread = series2 - hedge_ratio * series1
+        
+        # Step 3: ADF test on residuals
+        adf_result = self._adf_test(spread)
+        
+        return {
+            'hedge_ratio': hedge_ratio,
+            'pvalue': adf_result[1],
+            'test_statistic': adf_result[0],
+            'spread_std': spread.std()
+        }
