@@ -1,0 +1,74 @@
+# Polymarket Trading Configuration
+
+polymarket:
+  # Network Settings
+  network: "polygon"
+  rpc_url: "https://polygon-rpc.com"
+  web3_provider: "https://polygon-rpc.com"
+  
+  # Contract Addresses (Mainnet)
+  contracts:
+    polymarket: "0x4bFb41d5B3570DeFd03C39a9A4D8dE6Bd8B8982E"
+    conditional_tokens: "0xC59b0e4De5F1248C1140964E0fF287B192407E0C"
+    usdc: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174"
+  
+  # Trading Parameters
+  trading:
+    max_position_size_usdc: 1000
+    min_profit_threshold: 0.02  # 2%
+    default_spread: 0.02  # 2% for market making
+    gas_limit: 500000
+    gas_price_multiplier: 1.2
+    
+  # Strategy Parameters
+  strategies:
+    arbitrage:
+      enabled: true
+      min_profit: 0.03  # 3%
+      max_slippage: 0.01  # 1%
+    
+    spike_detection:
+      enabled: true
+      spike_threshold: 3.0  # Z-score threshold
+      lookback_period: 10  # trades
+      min_volume: 1000  # USDC
+    
+    copy_trading:
+      enabled: true
+      min_success_rate: 0.6  # 60%
+      max_trade_age: 60  # seconds
+      copy_fraction: 0.5  # Copy 50% of original size
+    
+    market_making:
+      enabled: true
+      spread: 0.02  # 2%
+      order_size: 50  # USDC
+      inventory_target: 0
+      max_inventory: 500  # USDC
+    
+  # Risk Management
+  risk:
+    max_daily_loss: 0.1  # 10%
+    max_consecutive_losses: 3
+    position_kelly_fraction: 0.5  # Use half-kelly
+    stop_loss: 0.2  # 20%
+    take_profit: 0.5  # 50%
+    
+  # Monitoring
+  monitoring:
+    update_interval: 30  # seconds
+    health_checks: true
+    telegram_alerts: false
+    discord_webhook: ""
+    
+  # Copy Trading Sources
+  copy_traders:
+    - "0x742d35Cc6634C0532925a3b844Bc9e8F1d5c2B8c"
+    - "0xE592427A0AEce92De3Edee1F18E0157C05861564"
+    - "0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD"
+    
+  # API Keys (for private use)
+  api_keys:
+    the_graph_api_key: ""
+    infura_project_id: ""
+    alchemy_api_key: ""
